@@ -2,16 +2,21 @@
 
 <head>
     <title>Park & Ride Navigator</title>
+    <script
+        src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/static/index.js"></script>
 </head>
 
 <body>
     <h1>Park & Ride Navigator</h1>
 
-    <form>
+    <form onsubmit="return getRoute()">
         Starting address:<br>
-        <input type="text" name="start_address"><br>
+        <input type="text" id="startAddress"><br>
         Destination address:<br>
-        <input type="text" name="end_address">
+        <input type="text" id="endAddress">
         <input type="submit" value="Find route">
     </form>
 </body>

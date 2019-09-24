@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 app = Flask(__name__)
 
 
@@ -9,6 +9,8 @@ def main_page():
 
 @app.route('/api/route')
 def get_route():
+    start_address = request.args.get('startAddress')
+    end_address = request.args.get('endAddress')
     return "Route data here"
 
 if __name__ == '__main__':
