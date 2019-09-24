@@ -1,27 +1,34 @@
 import requests
+from datetime import datetime
 
-response = requests.post('https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql', data="""{
-  plan(
-    fromPlace: "Kamppi, Helsinki::60.168992,24.932366",
-    toPlace: "Pisa, Espoo::60.175294,24.684855",
-    date: "2019-09-25",
-    time: "23:00:00",
-    numItineraries: 3
-  ) {
-    itineraries {
-      legs {
-        startTime
-        endTime
-        mode
-        duration
-        realTime
-        distance
+defaultStart = "Kamppi, Helsinki::60.168992,24.932366"
+defaultEnd = "Pisa, Espoo::60.175294,24.684855"
+defaultDate = datetime.today().strftime('%Y-%m-%d')
+defaultTime = datetime.now().strftime("%H:%M:%S")
+
+def hsl_api(start, end, date, time):
+  response = requests.post('https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql', data="""{
+    plan(
+      fromPlace: {defaultStart},
+      toPlace: {defaultEnd},
+      date: {defaultDate},
+      time: {defaultTime},
+      numItineraries: 3
+    ) {
+      itineraries {
+        legs {
+          startTime
+          endTime
+          mode
+          duration
+          realTime
+          distance
+        }
       }
     }
-  }
-}""")
+  }""")
 
-if response.status_code == 200:
-    print(response.content)
-else:
-    print('not found')
+  if response.status_code == 200:
+      return(response.content)
+  else:
+      return('not found')
