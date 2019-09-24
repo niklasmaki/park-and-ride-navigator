@@ -7,28 +7,31 @@ defaultDate = datetime.today().strftime('%Y-%m-%d')
 defaultTime = datetime.now().strftime("%H:%M:%S")
 
 def hsl_api(start, end, date, time):
-  response = requests.post('https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql', data="""{
+  data = f"""{{
     plan(
-      fromPlace: {defaultStart},
-      toPlace: {defaultEnd},
-      date: {defaultDate},
-      time: {defaultTime},
+      fromPlace: "{defaultStart}",
+      toPlace: "{defaultEnd}",
+      date: "{defaultDate}",
+      time: "{defaultTime}",
       numItineraries: 3
-    ) {
-      itineraries {
-        legs {
+    ) {{
+      itineraries {{
+        legs {{
           startTime
           endTime
           mode
           duration
           realTime
           distance
-        }
-      }
-    }
-  }""")
+        }}
+      }}
+    }}
+  }}
+  """
+  response = requests.post('https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql', data=data)
 
   if response.status_code == 200:
-      return(response.content)
+    return(response.content)
+
   else:
-      return('not found')
+    return('not found')
