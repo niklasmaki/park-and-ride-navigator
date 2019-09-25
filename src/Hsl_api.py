@@ -19,6 +19,16 @@ def hsl_api(start, end, date, time):
         legs {{
           startTime
           endTime
+          from {{
+            lat
+            lon
+            name
+          }}
+          to {{
+            lat
+            lon
+            name
+          }}
           mode
           duration
           realTime
