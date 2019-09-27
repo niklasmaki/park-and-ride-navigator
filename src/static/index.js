@@ -2,7 +2,7 @@
 
 function getRoute() {
     var startAddress = $('#startAddress').val()
-    var endAddress = $('#startAddress').val()
+    var endAddress = $('#endAddress').val()
 
     $.get('/api/route', { startAddress, endAddress })
         .done(data => {
