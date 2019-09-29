@@ -30,6 +30,9 @@ def hsl_api(start, end, date, time):
             name
           }}
           mode
+          trip {{
+            routeShortName
+          }}
           duration
           realTime
           distance
