@@ -104,3 +104,6 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# secret file
+/src/Gmaps_apikey.txt
