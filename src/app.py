@@ -14,6 +14,9 @@ def main_page():
 def get_route():
     start_address = request.args.get('startAddress')
     end_address = request.args.get('endAddress')
+    start_coords = (request.args.get('startLat'), request.args.get('startLon'))
+    end_coords = (request.args.get('endLat'), request.args.get('endLon'))
+    
     return hsl_api(start_address, end_address, 0,0)
 
 if __name__ == '__main__':
