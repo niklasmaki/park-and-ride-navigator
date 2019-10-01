@@ -36,6 +36,10 @@ def hsl_api(start, end, date, time):
           duration
           realTime
           distance
+          legGeometry {{
+            length
+            points
+          }}
         }}
       }}
     }}
