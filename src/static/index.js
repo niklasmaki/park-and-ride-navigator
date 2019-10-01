@@ -28,4 +28,16 @@ $(document).ready(() => {
     $('#endAddress').autocomplete({
         source: autoComplete
     })
+
+    var map = L.map('map', {
+        center: [60.192059,24.945831],
+        zoom: 13
+    });
+
+    L.tileLayer('https://cdn.digitransit.fi/map/v1/{id}/{z}/{x}/{y}.png', {
+        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+            '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+        maxZoom: 19,
+        id: 'hsl-map'
+    }).addTo(map);
 })
