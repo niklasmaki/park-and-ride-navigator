@@ -27,3 +27,10 @@ def return_closest_locations(start, amount): #read the park and ride.json data
     for x in range(amount): 
         closest_stops.append(q.get())
     return(closest_stops)
+
+
+def tuple_to_str(tpl):
+    """
+        Converts the given 2-tuple to a comma separated string.
+    """
+    return '{},{}'.format(tpl[0], tpl[1])

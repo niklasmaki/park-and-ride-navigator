@@ -9,11 +9,11 @@ defaultTime = datetime.now().strftime("%H:%M:%S")
 def hsl_api(start, end, date, time):
   data = f"""{{
     plan(
-      fromPlace: "{defaultStart}",
-      toPlace: "{defaultEnd}",
+      fromPlace: "{start}",
+      toPlace: "{end}",
       date: "{defaultDate}",
       time: "{defaultTime}",
-      numItineraries: 3
+      numItineraries: 1
     ) {{
       itineraries {{
         legs {{
