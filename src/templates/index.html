@@ -2,34 +2,39 @@
 
 <head>
     <title>Park & Ride Navigator</title>
-    <script
-        src="https://code.jquery.com/jquery-3.4.1.min.js"
-        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-        crossorigin="anonymous"></script>
-    <script
-        src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
-        integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
-        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+        integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="/static/index.js"></script>
     <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
     <script src="https://unpkg.com/polyline@0.2.0/src/polyline.js"></script>
     <link rel="stylesheet" type="text/css" href="/static/index.css" />
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 </head>
 
 <body>
-    <h1>Park & Ride Navigator</h1>
+    <div class='container'>
+        <h1>Park & Ride Navigator</h1>
 
-    <form onsubmit="return getRoute()">
-        Starting address:<br>
-        <input type="text" id="startAddress"><br>
-        Destination address:<br>
-        <input type="text" id="endAddress">
-        <input type="submit" value="Find route">
-    </form>
-
-    <div id="map"></div>
-
+        <div class="row">
+            <div class="col-sm">
+                <form onsubmit="return getRoute()">
+                    Starting address:<br>
+                    <input type="text" id="startAddress"><br>
+                    Destination address:<br>
+                    <input type="text" id="endAddress">
+                    <input type="submit" value="Find route">
+                </form>
+            </div>
+            <div class="col-sm">
+                <div id="map"></div>
+            </div>
+        </div>
+    </div>
 </body>
+
 </html>

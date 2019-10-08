@@ -14,10 +14,27 @@ function getRoute() {
         .done(data => {
             JSON.parse(data).forEach(leg => {
                 points = polyline.decode(leg['legGeometry']['points'])
-                draw_polyline(points, 'red')
+                
+                color = get_color(leg['mode'])
+
+                draw_polyline(points, color)
             })
         })
     return false
+}
+
+function get_color(mode) {
+    if (mode === 'BUS')
+        return '#007AC9'
+    if (mode === 'TRAM')
+        return '#00985F'
+    if (mode === 'RAIL')
+        return '#8C4799'
+    if (mode === 'SUBWAY')
+        return '#FF6319'
+    if (mode === 'WALK')
+        return '#333333'
+    return '#333333'
 }
 
 function draw_polyline(points, color) {
