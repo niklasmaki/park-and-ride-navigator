@@ -40,7 +40,7 @@ function showInstructions(instructions) {
 function getInstruction(leg) {
     var mode = leg['mode']
     var startDate = new Date(leg['startTime'])
-    var startTime = startDate.getHours() + ":" + startDate.getMinutes()
+    var startTime = ('0' + startDate.getHours()).slice(-2) + ":" + ('0' + startDate.getMinutes()).slice(-2)
     var result = ''
 
     if (leg['from']['name'] === 'Origin')
