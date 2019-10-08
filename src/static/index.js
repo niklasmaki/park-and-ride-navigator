@@ -3,14 +3,14 @@
 function getRoute() {
     var startAddress = $('#startAddress').val()
     var endAddress = $('#endAddress').val()
+    var start_time = $('#start_time').val()
     var startCoords = addressToCoordMap.get(startAddress)
     var endCoords = addressToCoordMap.get(endAddress)
     var startLat = startCoords[1]
     var startLon = startCoords[0]
     var endLat = endCoords[1]
     var endLon = endCoords[0]
-
-    $.get('/api/route', { startAddress, endAddress, startLat, startLon, endLat, endLon })
+    $.get('/api/route', { startAddress, endAddress, start_time, startLat, startLon, endLat, endLon })
         .done(data => {
             var instructions = []
             JSON.parse(data).forEach(leg => {
