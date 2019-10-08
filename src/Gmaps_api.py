@@ -1,4 +1,5 @@
 import googlemaps
+import polyline
 from datetime import datetime
 
 class Gmapsdirs:
@@ -40,11 +41,8 @@ class Gmapsdirs:
         Return format
         -------------
         {
-            'map_bounds':{},
-            'directions':{
-                'summary':{},
-                'steps':[]
-            },
+            'map_bounds':{'northeast':, 'southwest':},
+            'legs':[{'distance':, 'duration':, 'duration_in_traffic':, 'end_address':, 'end_location':, 'start_address':, 'start_location':, 'steps':, 'traffic_speed_entry':, 'via_waypoint':}],
             'additional_info':[]
         }
         '''
@@ -61,12 +59,15 @@ class Gmapsdirs:
             directions = self.gmaps.directions(start_loc,target_loc,mode='driving',arrival_time=time)
 
         #A little bit of formating for the result to make sense
+        point_seq = []
+        for leg in directions[0]['legs']:
+            for step in leg['steps']:
+                point_seq = point_seq+polyline.decode(step['polyline']['points'])
+        
         retobj = {
             'map_bounds':directions[0]['bounds'],
-            'directions':{
-                'summary': dict((key,directions[0]['legs'][0][key]) for key in directions[0]['legs'][0] if key != "steps"),
-                'steps': directions[0]['legs'][0]['steps']
-            },
+            'legs':directions[0]['legs'],
+            'polyline':polyline.encode(point_seq),
             'additional_info':directions[0]['summary']
         }
 
