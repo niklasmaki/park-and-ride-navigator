@@ -12,18 +12,62 @@ function getRoute() {
 
     $.get('/api/route', { startAddress, endAddress, startLat, startLon, endLat, endLon })
         .done(data => {
+            var instructions = []
             JSON.parse(data).forEach(leg => {
+                console.log(leg)
                 points = polyline.decode(leg['legGeometry']['points'])
-                
-                color = get_color(leg['mode'])
 
-                draw_polyline(points, color)
+                color = getColor(leg['mode'])
+                drawPolyline(points, color)
+                instructions.push(getInstruction(leg))
             })
+            console.log(instructions)
+            showInstructions(instructions)
         })
     return false
 }
 
-function get_color(mode) {
+function showInstructions(instructions) {
+    var listParent = $("#instructions")
+    instructions.forEach(instruction => {
+        var listElement = document.createElement('li')
+        listElement.setAttribute('class', 'list-group-item')
+        listElement.innerHTML = instruction
+        listParent.append(listElement)
+    })
+}
+
+function getInstruction(leg) {
+    var mode = leg['mode']
+    var startDate = new Date(leg['startTime'])
+    var startTime = startDate.getHours() + ":" + startDate.getMinutes()
+    var result = ''
+
+    if (leg['from']['name'] === 'Origin')
+        result += `Leave at ${startTime}. `
+
+    if (mode === 'WALK') {
+        result += `Walk from ${leg['from']['name']} to ${leg['to']['name']}.`
+        return result
+    }
+
+    result += 'Take the '
+    if (mode === 'BUS')
+        result += 'bus '
+    else if (mode === 'TRAM')
+        result += 'tram '
+    else if (mode === 'RAIL')
+        result += 'train '
+    else if (mode === 'SUBWAY')
+        result += 'subway '
+    else
+        result += 'vehicle '
+
+    result += `${leg['trip']['routeShortName']} at ${startTime} from ${leg['from']['name']} to ${leg['to']['name']}.` 
+    return result
+}
+
+function getColor(mode) {
     if (mode === 'BUS')
         return '#007AC9'
     if (mode === 'TRAM')
@@ -37,7 +81,7 @@ function get_color(mode) {
     return '#333333'
 }
 
-function draw_polyline(points, color) {
+function drawPolyline(points, color) {
     L.polyline(points,
         {
             color

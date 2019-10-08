@@ -19,7 +19,7 @@ def get_route():
     start_coords = (request.args.get('startLat'), request.args.get('startLon'))
     end_coords = (request.args.get('endLat'), request.args.get('endLon'))
 
-    result = hsl_api(tuple_to_str(start_coords), tuple_to_str(end_coords), 0, 0)
+    result = hsl_api(tuple_to_str(start_coords), tuple_to_str(end_coords))
     legs = json.loads(result.decode('UTF-8'))['data']['plan']['itineraries'][0]['legs']
     
     return json.dumps(legs)
