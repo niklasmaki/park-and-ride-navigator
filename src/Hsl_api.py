@@ -6,13 +6,13 @@ defaultEnd = "Pisa, Espoo::60.175294,24.684855"
 defaultDate = datetime.today().strftime('%Y-%m-%d')
 defaultTime = datetime.now().strftime("%H:%M:%S")
 
-def hsl_api(start, end, date, time):
+def hsl_api(start=defaultStart, end=defaultEnd, date=defaultDate, time=defaultTime):
   data = f"""{{
     plan(
       fromPlace: "{start}",
       toPlace: "{end}",
-      date: "{defaultDate}",
-      time: "{defaultTime}",
+      date: "{date}",
+      time: "{time}",
       numItineraries: 1
     ) {{
       itineraries {{
