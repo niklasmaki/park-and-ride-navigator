@@ -74,8 +74,8 @@ def get_n_closest_routes(start_loc=(60.2489528,24.8229717),end_loc=(60.204001,24
     transit_options = []
     for driving_instruction_set in driving_instructions:
         #gather required information
-        start_location = driving_instruction_set['directions']['summary']['start_location']
-        end_location = driving_instruction_set['directions']['summary']['end_location']
+        start_location = driving_instruction_set['directions']['summary']['end_location']
+        end_location = end_loc
         time_seconds = departure_time+driving_instruction_set['directions']['summary']['duration']['value']
         dt = datetime.fromtimestamp(time_seconds)
         #transform to format HSL API understands
