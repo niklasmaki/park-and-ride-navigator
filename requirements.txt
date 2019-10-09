@@ -7,3 +7,4 @@ Werkzeug>=0.15.6
 requests
 geopy
 googlemaps
+polyline
