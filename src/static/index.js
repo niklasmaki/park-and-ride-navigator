@@ -13,18 +13,32 @@ function getRoute() {
     $.get('/api/route', { startAddress, endAddress, startTime, startLat, startLon, endLat, endLon })
         .done(data => {
             var instructions = []
-            JSON.parse(data).forEach(leg => {
-                console.log(leg)
-                points = polyline.decode(leg['legGeometry']['points'])
 
-                color = getColor(leg['mode'])
-                drawPolyline(points, color)
-                instructions.push(getInstruction(leg))
-            })
-            console.log(instructions)
+            drivingPart = JSON.parse(data)[0]['driving_part']
+            transitPart = JSON.parse(data)[0]['transit_part']['data']['plan']['itineraries'][0]['legs']
+
+            drawDrivingPart(drivingPart)
+            drawTransitPart(transitPart, instructions)
+
             showInstructions(instructions)
         })
     return false
+}
+
+function drawDrivingPart(drivingPart) {
+    points = polyline.decode(drivingPart['polyline'])
+    color = '#333333'
+    drawPolyline(points, color)
+}
+
+function drawTransitPart(transitPart, instructions) {
+    transitPart.forEach(leg => {
+        points = polyline.decode(leg['legGeometry']['points'])
+
+        color = getColor(leg['mode'])
+        drawPolyline(points, color)
+        instructions.push(getInstruction(leg))
+    })
 }
 
 function showInstructions(instructions) {
@@ -63,7 +77,7 @@ function getInstruction(leg) {
     else
         result += 'vehicle '
 
-    result += `${leg['trip']['routeShortName']} at ${startTime} from ${leg['from']['name']} to ${leg['to']['name']}.` 
+    result += `${leg['trip']['routeShortName']} at ${startTime} from ${leg['from']['name']} to ${leg['to']['name']}.`
     return result
 }
 
@@ -77,7 +91,7 @@ function getColor(mode) {
     if (mode === 'SUBWAY')
         return '#FF6319'
     if (mode === 'WALK')
-        return '#333333'
+        return '#00B2A9'
     return '#333333'
 }
 
@@ -118,7 +132,7 @@ function initMap() {
 
 
 $(document).ready(() => {
-    $("#startTime").val(new Date().toIsoString().slice(0,16));
+    $("#startTime").val(new Date().toIsoString().slice(0, 16));
 
     addressToCoordMap = new Map()
 
@@ -134,10 +148,10 @@ $(document).ready(() => {
 
 // Helper method to get dates in correct timezone
 // Source: https://stackoverflow.com/a/17415677
-Date.prototype.toIsoString = function() {
+Date.prototype.toIsoString = function () {
     var tzo = -this.getTimezoneOffset(),
         dif = tzo >= 0 ? '+' : '-',
-        pad = function(num) {
+        pad = function (num) {
             var norm = Math.floor(Math.abs(num));
             return (norm < 10 ? '0' : '') + norm;
         };

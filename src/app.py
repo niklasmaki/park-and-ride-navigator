@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 from Hsl_api import hsl_api
 from Park_and_ride_api import park_and_ride_api
 from Utils import tuple_to_str, datetime_to_date_and_time
+from Routes import get_n_closest_routes
 import json
 
 app = Flask(__name__)
@@ -18,10 +19,9 @@ def get_route():
     end_coords = (request.args.get('endLat'), request.args.get('endLon'))
     start_time = request.args.get('startTime')
 
-    result = hsl_api(tuple_to_str(start_coords), tuple_to_str(end_coords), *datetime_to_date_and_time(start_time))
-    legs = json.loads(result.decode('UTF-8'))['data']['plan']['itineraries'][0]['legs']
-    
-    return json.dumps(legs)
+    res = get_n_closest_routes(start_coords, end_coords)
+
+    return json.dumps(res)
 
 if __name__ == '__main__':
     app.run(debug=True)
