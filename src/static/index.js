@@ -3,14 +3,14 @@
 function getRoute() {
     var startAddress = $('#startAddress').val()
     var endAddress = $('#endAddress').val()
-    var start_time = $('#start_time').val()
+    var startTime = $('#startTime').val()
     var startCoords = addressToCoordMap.get(startAddress)
     var endCoords = addressToCoordMap.get(endAddress)
     var startLat = startCoords[1]
     var startLon = startCoords[0]
     var endLat = endCoords[1]
     var endLon = endCoords[0]
-    $.get('/api/route', { startAddress, endAddress, start_time, startLat, startLon, endLat, endLon })
+    $.get('/api/route', { startAddress, endAddress, startTime, startLat, startLon, endLat, endLon })
         .done(data => {
             var instructions = []
             JSON.parse(data).forEach(leg => {
@@ -116,7 +116,10 @@ function initMap() {
     polyline_layer = L.layerGroup().addTo(map)
 }
 
+
 $(document).ready(() => {
+    $("#startTime").val(new Date().toIsoString().slice(0,16));
+
     addressToCoordMap = new Map()
 
     $('#startAddress').autocomplete({
@@ -128,3 +131,22 @@ $(document).ready(() => {
 
     initMap()
 })
+
+// Helper method to get dates in correct timezone
+// Source: https://stackoverflow.com/a/17415677
+Date.prototype.toIsoString = function() {
+    var tzo = -this.getTimezoneOffset(),
+        dif = tzo >= 0 ? '+' : '-',
+        pad = function(num) {
+            var norm = Math.floor(Math.abs(num));
+            return (norm < 10 ? '0' : '') + norm;
+        };
+    return this.getFullYear() +
+        '-' + pad(this.getMonth() + 1) +
+        '-' + pad(this.getDate()) +
+        'T' + pad(this.getHours()) +
+        ':' + pad(this.getMinutes()) +
+        ':' + pad(this.getSeconds()) +
+        dif + pad(tzo / 60) +
+        ':' + pad(tzo % 60);
+}
