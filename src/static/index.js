@@ -13,25 +13,28 @@ function getRoute() {
     $.get('/api/route', { startAddress, endAddress, startTime, startLat, startLon, endLat, endLon })
         .done(data => {
             var instructions = []
-
+            var time = startTime.slice(-5)
             drivingPart = JSON.parse(data)[0]['driving_part']
             transitPart = JSON.parse(data)[0]['transit_part']['data']['plan']['itineraries'][0]['legs']
 
-            drawDrivingPart(drivingPart)
-            drawTransitPart(transitPart, instructions)
+            handleDrivingPart(drivingPart, instructions, time)
+            handleTransitPart(transitPart, instructions)
 
             showInstructions(instructions)
         })
     return false
 }
 
-function drawDrivingPart(drivingPart) {
+function handleDrivingPart(drivingPart, instructions, startTime) {
     points = polyline.decode(drivingPart['polyline'])
     color = '#333333'
     drawPolyline(points, color)
+    endAddress = drivingPart['legs'][0]['end_address'].split(',')[0]
+    instruction = `Leave at ${startTime}. Drive to ${endAddress}.`
+    instructions.push(instruction)
 }
 
-function drawTransitPart(transitPart, instructions) {
+function handleTransitPart(transitPart, instructions) {
     transitPart.forEach(leg => {
         points = polyline.decode(leg['legGeometry']['points'])
 
@@ -57,8 +60,13 @@ function getInstruction(leg) {
     var startTime = ('0' + startDate.getHours()).slice(-2) + ":" + ('0' + startDate.getMinutes()).slice(-2)
     var result = ''
 
-    if (leg['from']['name'] === 'Origin')
-        result += `Leave at ${startTime}. `
+    if (leg['from']['name'] === 'Origin') {
+        result += `Leave the parking area by ${startTime}. `
+        if (mode === 'WALK'){
+            result += `Walk to ${leg['to']['name']}.`
+            return result
+        }
+    }
 
     if (mode === 'WALK') {
         result += `Walk from ${leg['from']['name']} to ${leg['to']['name']}.`

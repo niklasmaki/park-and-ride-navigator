@@ -18,7 +18,6 @@ class Gmapsdirs:
         '''Initializes Googlemaps API with API key'''
         with open("Gmaps_apikey.txt") as f:
             self.gmaps = googlemaps.Client(key=f.read())
-        print(self.gmaps)
 
     def get_directions(self, start_loc, target_loc, time_mode='departure', time=None):
         '''Returns directions object with information on how to drive from start_loc to target_loc.
