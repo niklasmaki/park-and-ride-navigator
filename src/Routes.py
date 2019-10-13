@@ -37,7 +37,7 @@ def calc_route_total_duration(route,start_seconds):
     end_seconds = get_transit_end_seconds(route['transit_part'])
     return end_seconds-start_seconds
 
-def get_n_closest_routes(start_loc=(60.2489528,24.8229717),end_loc=(60.204001,24.958108),n=3):
+def get_n_closest_routes(start_loc=(60.2489528,24.8229717),end_loc=(60.204001,24.958108),departure_time='2019-10-15T08:00',n=3):
     '''Returns routes through n closest parking locations from start_loc to end loc
 
     Parameters
@@ -47,6 +47,9 @@ def get_n_closest_routes(start_loc=(60.2489528,24.8229717),end_loc=(60.204001,24
 
     end_loc : (int,int)
         The end location for directions. (lat/lng tuple)
+    
+    departure_time : string
+        The departure time in format '2019-10-15T08:00'.
 
     n : int
         The number of closest parking locations through which a route should be computed
@@ -58,7 +61,7 @@ def get_n_closest_routes(start_loc=(60.2489528,24.8229717),end_loc=(60.204001,24
 
     Returns a list of routes sorted(ascending) by total duration in seconds.
     '''
-    departure_time = int(datetime.now().replace(microsecond=0).timestamp())
+    departure_time = datetime.strptime(departure_time, "%Y-%m-%dT%H:%M").timestamp()
 
     # Find n closest parking locations
     closest_parking_data = return_closest_locations(start_loc,n)

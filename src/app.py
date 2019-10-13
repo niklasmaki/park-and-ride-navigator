@@ -18,8 +18,7 @@ def get_route():
     start_coords = (request.args.get('startLat'), request.args.get('startLon'))
     end_coords = (request.args.get('endLat'), request.args.get('endLon'))
     start_time = request.args.get('startTime')
-
-    res = get_n_closest_routes(start_coords, end_coords)
+    res = get_n_closest_routes(start_coords, end_coords, start_time)
 
     return json.dumps(res)
 
