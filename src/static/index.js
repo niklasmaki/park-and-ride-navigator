@@ -91,7 +91,7 @@ function getInstruction(leg) {
     }
 
     if (mode === 'WALK') {
-        innerHtml += `Walk from ${leg['from']['name']} to ${leg['to']['name']}.`
+        innerHtml += `Walk from ${leg['from']['name']} to ${leg['to']['name']}. `
         if (leg['to']['name'] === 'Destination') {
             innerHtml += `You will arrive at ${endTime}.`
         }
