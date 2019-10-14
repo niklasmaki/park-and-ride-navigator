@@ -31,7 +31,7 @@ function handleDrivingPart(drivingPart, instructions, startTime) {
     drawPolyline(points, color)
     endAddress = drivingPart['legs'][0]['end_address'].split(',')[0]
     instruction = `Leave at ${startTime}. Drive to ${endAddress}.`
-    instructions.push(instruction)
+    instructions.push({'innerHtml':instruction,'mode':'DRIVE'})
 }
 
 function handleTransitPart(transitPart, instructions) {
@@ -49,7 +49,27 @@ function showInstructions(instructions) {
     instructions.forEach(instruction => {
         var listElement = document.createElement('li')
         listElement.setAttribute('class', 'list-group-item')
-        listElement.innerHTML = instruction
+
+        var rowElement = document.createElement('div')
+        rowElement.setAttribute('class', 'row')
+        var col1 = document.createElement('div')
+        col1.setAttribute('class', 'col-9')
+        col1.innerHTML = instruction.innerHtml
+        rowElement.append(col1)
+
+        var col2 = document.createElement('div')
+        col2.setAttribute('class', 'col-3')
+
+        var col2span = document.createElement('span')
+        col2span.setAttribute("style", 'font-size: 32px; color: ' + getColor(instruction.mode))
+
+        var col2spanIcon = document.createElement('i')
+        col2spanIcon.setAttribute("class", getIcon(instruction.mode))
+
+        col2span.append(col2spanIcon)
+        col2.append(col2span)
+        rowElement.append(col2)
+        listElement.append(rowElement)
         listParent.append(listElement)
     })
 }
@@ -60,38 +80,54 @@ function getInstruction(leg) {
     var startTime = ('0' + startDate.getHours()).slice(-2) + ":" + ('0' + startDate.getMinutes()).slice(-2)
     var endDate = new Date(leg['endTime'])
     var endTime = ('0' + endDate.getHours()).slice(-2) + ":" + ('0' + endDate.getMinutes()).slice(-2)
-    var result = ''
+    var innerHtml = ''
 
     if (leg['from']['name'] === 'Origin') {
-        result += `Leave the parking area by ${startTime}. `
-        if (mode === 'WALK'){
-            result += `Walk to ${leg['to']['name']}.`
-            return result
+        innerHtml += `Leave the parking area by ${startTime}. `
+        if (mode === 'WALK') {
+            innerHtml += `Walk to ${leg['to']['name']}.`
+            return { 'innerHtml': innerHtml, 'mode': mode }
         }
     }
 
     if (mode === 'WALK') {
-        result += `Walk from ${leg['from']['name']} to ${leg['to']['name']}. `
+        innerHtml += `Walk from ${leg['from']['name']} to ${leg['to']['name']}.`
         if (leg['to']['name'] === 'Destination') {
-            result += `You will arrive at ${endTime}.`
+            innerHtml += `You will arrive at ${endTime}.`
         }
-        return result
+        return { 'innerHtml': innerHtml, 'mode': mode }
     }
 
-    result += 'Take the '
+    innerHtml += 'Take the '
     if (mode === 'BUS')
-        result += 'bus '
+        innerHtml += 'bus '
     else if (mode === 'TRAM')
-        result += 'tram '
+        innerHtml += 'tram '
     else if (mode === 'RAIL')
-        result += 'train '
+        innerHtml += 'train '
     else if (mode === 'SUBWAY')
-        result += 'subway '
+        innerHtml += 'subway '
     else
-        result += 'vehicle '
+        innerHtml += 'vehicle '
 
-    result += `${leg['trip']['routeShortName']} at ${startTime} from ${leg['from']['name']} to ${leg['to']['name']}.`
-    return result
+    innerHtml += `${leg['trip']['routeShortName']} at ${startTime} from ${leg['from']['name']} to ${leg['to']['name']}.`
+    return { 'innerHtml': innerHtml, 'mode': mode }
+}
+
+function getIcon(mode) {
+    if (mode === 'BUS')
+        return 'fas fa-bus'
+    if (mode === 'TRAM')
+        return 'fas fa-tram'
+    if (mode === 'RAIL')
+        return 'fas fa-train'
+    if (mode === 'SUBWAY')
+        return 'fas fa-subway'
+    if (mode === 'WALK')
+        return 'fas fa-walking'
+    if (mode === 'DRIVE')
+        return 'fas fa-car'
+    return 'fas fa-car-side'
 }
 
 function getColor(mode) {
@@ -105,6 +141,8 @@ function getColor(mode) {
         return '#FF6319'
     if (mode === 'WALK')
         return '#00B2A9'
+    if (mode === 'DRIVE')
+        return '#333333'
     return '#333333'
 }
 
