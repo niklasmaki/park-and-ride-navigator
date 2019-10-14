@@ -48,12 +48,12 @@ function showInstructions(instructions) {
     var listParent = $("#instructions")
     instructions.forEach(instruction => {
         var listElement = document.createElement('li')
-        listElement.setAttribute('class', 'list-group-item')
+        listElement.setAttribute('class', 'list-group-item list-group-item-action')
 
         var rowElement = document.createElement('div')
         rowElement.setAttribute('class', 'row')
         var col1 = document.createElement('div')
-        col1.setAttribute('class', 'col-9')
+        col1.setAttribute('class', 'col-9 unselectable')
         col1.innerHTML = instruction.innerHtml
         rowElement.append(col1)
 
