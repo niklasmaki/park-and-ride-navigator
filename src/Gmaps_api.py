@@ -1,6 +1,7 @@
 import googlemaps
 import polyline
 from datetime import datetime
+import os
 
 class Gmapsdirs:
     '''Wrapper class for google maps directions
@@ -16,7 +17,8 @@ class Gmapsdirs:
     '''
     def __init__(self):
         '''Initializes Googlemaps API with API key'''
-        with open("Gmaps_apikey.txt") as f:
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        with open(os.path.join(dir_path, "Gmaps_apikey.txt")) as f:
             self.gmaps = googlemaps.Client(key=f.read())
 
     def get_directions(self, start_loc, target_loc, time_mode='departure', time=None):
