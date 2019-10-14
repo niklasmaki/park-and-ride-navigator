@@ -3,3 +3,8 @@
     height: 80vh;
     width: 40vw;
 }
+
+.list-group-item {
+    background-color: #fbfbfb;
+    border: 1px solid rgba(0,0,0,.250);
+}
