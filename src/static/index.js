@@ -16,7 +16,7 @@ function getRoute() {
             var time = startTime.slice(-5)
             drivingPart = JSON.parse(data)[0]['driving_part']
             transitPart = JSON.parse(data)[0]['transit_part']['data']['plan']['itineraries'][0]['legs']
-
+            console.log(transitPart)
             handleDrivingPart(drivingPart, instructions, time)
             handleTransitPart(transitPart, instructions)
 
@@ -58,6 +58,8 @@ function getInstruction(leg) {
     var mode = leg['mode']
     var startDate = new Date(leg['startTime'])
     var startTime = ('0' + startDate.getHours()).slice(-2) + ":" + ('0' + startDate.getMinutes()).slice(-2)
+    var endDate = new Date(leg['endTime'])
+    var endTime = ('0' + endDate.getHours()).slice(-2) + ":" + ('0' + endDate.getMinutes()).slice(-2)
     var result = ''
 
     if (leg['from']['name'] === 'Origin') {
@@ -69,7 +71,10 @@ function getInstruction(leg) {
     }
 
     if (mode === 'WALK') {
-        result += `Walk from ${leg['from']['name']} to ${leg['to']['name']}.`
+        result += `Walk from ${leg['from']['name']} to ${leg['to']['name']}. `
+        if (leg['to']['name'] === 'Destination') {
+            result += `You will arrive at ${endTime}.`
+        }
         return result
     }
 
