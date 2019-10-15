@@ -15,6 +15,8 @@ function getRoute() {
         .done(data => {
             var instructions = []
             var time = startTime.slice(-5)
+            var ul = document.getElementById('instructions')
+            while(ul.firstChild) ul.removeChild(ul.firstChild)
             drivingPart = JSON.parse(data)[0]['driving_part']
             transitPart = JSON.parse(data)[0]['transit_part']['data']['plan']['itineraries'][0]['legs']
             var points1 = handleDrivingPart(drivingPart, instructions, time)
