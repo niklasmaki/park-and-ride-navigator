@@ -4,7 +4,7 @@ from queue import PriorityQueue
 from Park_and_ride_api import park_and_ride_api
 
 start = ((60.3249506,24.7274053)) #example start point
-amount = 12
+amount = 10
 
 def return_closest_locations(start, amount): #read the park and ride.json data
     data = park_and_ride_api()
@@ -24,7 +24,7 @@ def return_closest_locations(start, amount): #read the park and ride.json data
 
     # return the amount of closest stops, 10 is by default 
     closest_stops = []
-    for x in range(amount): 
+    for x in range(amount):
         closest_stops.append(q.get())
     return(closest_stops)
 
