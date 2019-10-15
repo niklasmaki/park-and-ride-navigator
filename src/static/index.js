@@ -1,5 +1,6 @@
 
 
+var leaflet_map;
 function getRoute() {
     var startAddress = $('#startAddress').val()
     var endAddress = $('#endAddress').val()
@@ -16,10 +17,11 @@ function getRoute() {
             var time = startTime.slice(-5)
             drivingPart = JSON.parse(data)[0]['driving_part']
             transitPart = JSON.parse(data)[0]['transit_part']['data']['plan']['itineraries'][0]['legs']
-            console.log(transitPart)
-            handleDrivingPart(drivingPart, instructions, time)
-            handleTransitPart(transitPart, instructions)
-
+            var points1 = handleDrivingPart(drivingPart, instructions, time)
+            var points2 = handleTransitPart(transitPart, instructions)
+            var all_points = points1.concat(points2)
+            var bounds = new L.LatLngBounds(all_points);
+            leaflet_map.fitBounds(bounds)
             showInstructions(instructions)
         })
     return false
@@ -32,16 +34,19 @@ function handleDrivingPart(drivingPart, instructions, startTime) {
     endAddress = drivingPart['legs'][0]['end_address'].split(',')[0]
     instruction = `Leave at ${startTime}. Drive to ${endAddress}.`
     instructions.push({'innerHtml':instruction,'mode':'DRIVE'})
+    return points
 }
 
 function handleTransitPart(transitPart, instructions) {
+    points_list= []
     transitPart.forEach(leg => {
         points = polyline.decode(leg['legGeometry']['points'])
-
+        points_list=points_list.concat(points)
         color = getColor(leg['mode'])
         drawPolyline(points, color)
         instructions.push(getInstruction(leg))
     })
+    return points_list
 }
 
 function showInstructions(instructions) {
@@ -150,7 +155,8 @@ function drawPolyline(points, color) {
     L.polyline(points,
         {
             'color':color,
-            'weight':4
+            'weight':4,
+            'opacity':0.8
         }).addTo(polyline_layer)
 }
 
@@ -173,7 +179,7 @@ function initMap() {
         zoomSnap: 0.1,
         zoom: 13
     });
-
+    leaflet_map=map
     L.tileLayer('https://cdn.digitransit.fi/map/v1/{id}/{z}/{x}/{y}.png', {
         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
             '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
