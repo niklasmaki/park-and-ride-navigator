@@ -182,7 +182,7 @@ function autoComplete(request, response) {
 function initMap() {
     var map = L.map('map', {
         center: [60.192059, 24.945831],
-        zoomDelta: 0.25,
+        zoomDelta: 0.5,
         zoomSnap: 0.1,
         zoom: 13
     });
