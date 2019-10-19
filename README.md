@@ -1,5 +1,10 @@
 # Park & Ride Navigator
 
+### App
+
+The app is available at https://park-and-ride-navigator.herokuapp.com/.
+
+
 ### Installation (Linux)
 
 1. ```git clone https://github.com/niklasmaki/park-and-ride-navigator.git```
