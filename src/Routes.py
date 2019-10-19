@@ -61,6 +61,9 @@ def get_n_closest_routes(start_loc=(60.2489528,24.8229717),end_loc=(60.204001,24
 
     Returns a list of routes sorted(ascending) by total duration in seconds.
     '''
+    # The number of seconds reserved for parking
+    extra_parking_time = 300
+
     departure_time = datetime.strptime(departure_time, "%Y-%m-%dT%H:%M").timestamp()
 
     # Find n closest parking locations
@@ -78,7 +81,7 @@ def get_n_closest_routes(start_loc=(60.2489528,24.8229717),end_loc=(60.204001,24
     for driving_instruction_set in driving_instructions:
         #gather required information
         start_location = driving_instruction_set['legs'][len(driving_instruction_set['legs'])-1]['end_location']
-        time_seconds = departure_time+driving_instruction_set['legs'][len(driving_instruction_set['legs'])-1]['duration']['value']
+        time_seconds = departure_time+driving_instruction_set['legs'][len(driving_instruction_set['legs'])-1]['duration']['value'] + extra_parking_time
         dt = datetime.fromtimestamp(time_seconds)
         #transform to format HSL API understands
         start_string = str(start_location['lat'])+","+str(start_location['lng'])
