@@ -18,8 +18,13 @@ class Gmapsdirs:
     def __init__(self):
         '''Initializes Googlemaps API with API key'''
         dir_path = os.path.dirname(os.path.realpath(__file__))
-        with open(os.path.join(dir_path, "Gmaps_apikey.txt")) as f:
-            self.gmaps = googlemaps.Client(key=f.read())
+        file_path = os.path.join(dir_path, "Gmaps_apikey.txt")
+        if (os.path.exists(file_path)):
+            with open(file_path) as f:
+                self.gmaps = googlemaps.Client(key=f.read())
+        else:
+            # Try to use env variable if file doesn't exist (for Heroku)
+            self.gmaps = googlemaps.Client(key=os.environ['GMAPS_KEY'])
 
     def get_directions(self, start_loc, target_loc, time_mode='departure', time=None):
         '''Returns directions object with information on how to drive from start_loc to target_loc.
