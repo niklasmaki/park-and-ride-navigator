@@ -161,7 +161,7 @@ function drawPolyline(points, color) {
 }
 
 function autoComplete(request, response) {
-    $.get('http://api.digitransit.fi/geocoding/v1/autocomplete', { text: request.term, sources: 'osm' })
+    $.get('https://api.digitransit.fi/geocoding/v1/autocomplete', { text: request.term, sources: 'osm' })
         .done(data => {
             data.features.forEach(feature =>
                 addressToCoordMap.set(feature.properties.label, feature.geometry.coordinates))
