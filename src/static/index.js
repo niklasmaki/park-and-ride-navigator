@@ -15,8 +15,7 @@ function getRoute() {
         .done(data => {
             var instructions = []
             var time = startTime.slice(-5)
-            var ul = document.getElementById('instructions')
-            while(ul.firstChild) ul.removeChild(ul.firstChild)
+            emptyPreviousSearch() 
             drivingPart = JSON.parse(data)[0]['driving_part']
             transitPart = JSON.parse(data)[0]['transit_part']['data']['plan']['itineraries'][0]['legs']
             var points1 = handleDrivingPart(drivingPart, instructions, time)
@@ -27,6 +26,12 @@ function getRoute() {
             showInstructions(instructions)
         })
     return false
+}
+
+function emptyPreviousSearch() {
+    var ul = document.getElementById('instructions')
+    while(ul.firstChild) ul.removeChild(ul.firstChild)
+    polylineLayer.clearLayers()
 }
 
 function handleDrivingPart(drivingPart, instructions, startTime) {
@@ -159,7 +164,7 @@ function drawPolyline(points, color) {
             'color':color,
             'weight':4,
             'opacity':0.8
-        }).addTo(polyline_layer)
+        }).addTo(polylineLayer)
 }
 
 function autoComplete(request, response) {
@@ -189,7 +194,7 @@ function initMap() {
         id: 'hsl-map'
     }).addTo(map);
 
-    polyline_layer = L.layerGroup().addTo(map)
+    polylineLayer = L.layerGroup().addTo(map)
 }
 
 
