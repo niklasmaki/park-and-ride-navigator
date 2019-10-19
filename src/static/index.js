@@ -205,7 +205,7 @@ function initMap() {
 }
 
 function setMapSize() {
-    $("#map").height(0.75 * $(window).height()).width(0.4 * $(window).width())
+    $("#map").height(0.8 * $(window).height()).width(0.4 * $(window).width())
 }
 
 
