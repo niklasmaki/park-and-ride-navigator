@@ -1,6 +1,6 @@
 
 
-var leaflet_map;
+var leafletMap;
 function getRoute() {
     var startAddress = $('#startAddress').val()
     var endAddress = $('#endAddress').val()
@@ -22,7 +22,7 @@ function getRoute() {
             var points2 = handleTransitPart(transitPart, instructions)
             var all_points = points1.concat(points2)
             var bounds = new L.LatLngBounds(all_points);
-            leaflet_map.fitBounds(bounds)
+            leafletMap.fitBounds(bounds)
             showInstructions(instructions)
         })
     return false
@@ -186,7 +186,7 @@ function initMap() {
         zoomSnap: 0.1,
         zoom: 13
     });
-    leaflet_map=map
+    leafletMap=map
     L.tileLayer('https://cdn.digitransit.fi/map/v1/{id}/{z}/{x}/{y}.png', {
         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
             '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
@@ -195,6 +195,15 @@ function initMap() {
     }).addTo(map);
 
     polylineLayer = L.layerGroup().addTo(map)
+
+    $(window).on("resize", function() {
+        setMapSize()
+        map.invalidateSize();
+    }).trigger("resize")
+}
+
+function setMapSize() {
+    $("#map").height(0.75 * $(window).height()).width(0.4 * $(window).width())
 }
 
 
@@ -212,6 +221,8 @@ $(document).ready(() => {
 
     initMap()
 })
+
+
 
 // Helper method to get dates in correct timezone
 // Source: https://stackoverflow.com/a/17415677
