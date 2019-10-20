@@ -1,7 +1,7 @@
 
-
 var leafletMap;
 function getRoute() {
+    showModal()
     var startAddress = $('#startAddress').val()
     var endAddress = $('#endAddress').val()
     var startTime = $('#startTime').val()
@@ -21,11 +21,28 @@ function getRoute() {
             var points1 = handleDrivingPart(drivingPart, instructions, time)
             var points2 = handleTransitPart(transitPart, instructions)
             var all_points = points1.concat(points2)
+            hideModal()
             var bounds = new L.LatLngBounds(all_points);
             leafletMap.fitBounds(bounds)
             showInstructions(instructions)
         })
     return false
+}
+
+function showModal() {
+    $("#loadMe").modal({
+      backdrop: "static", //remove ability to close modal with click
+      keyboard: false, //remove option to close with keyboard
+      show: true //Display loader!
+    });
+    setTimeout(function() {
+      //failsafe
+      hideModal()
+    }, 20000);
+}
+
+function hideModal(){
+    $("#loadMe").modal("hide");
 }
 
 function emptyPreviousSearch() {
@@ -223,7 +240,6 @@ $(document).ready(() => {
 
     initMap()
 })
-
 
 
 // Helper method to get dates in correct timezone
