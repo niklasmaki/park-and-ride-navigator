@@ -4,7 +4,7 @@ function getRoute() {
     showModal()
     var startAddress = $('#startAddress').val()
     var endAddress = $('#endAddress').val()
-    var startTime = $('#startTime').val()
+    var startTime = $('#datetimepicker1').datetimepicker('viewDate').format('YYYY-MM-DDTHH:mm')
     var startCoords = addressToCoordMap.get(startAddress)
     var endCoords = addressToCoordMap.get(endAddress)
     var startLat = startCoords[1]
@@ -227,7 +227,6 @@ function setMapSize() {
 
 
 $(document).ready(() => {
-    $("#startTime").val(new Date().toIsoString().slice(0, 16));
 
     addressToCoordMap = new Map()
 
@@ -238,25 +237,14 @@ $(document).ready(() => {
         source: autoComplete
     })
 
+    $('#datetimepicker1').datetimepicker({
+        icons: {
+            date: 'far fa-calendar',
+            time: 'far fa-clock'
+        },
+        format: "DD.MM.YYYY HH:mm",
+        defaultDate: moment()
+    })
+    
     initMap()
 })
-
-
-// Helper method to get dates in correct timezone
-// Source: https://stackoverflow.com/a/17415677
-Date.prototype.toIsoString = function () {
-    var tzo = -this.getTimezoneOffset(),
-        dif = tzo >= 0 ? '+' : '-',
-        pad = function (num) {
-            var norm = Math.floor(Math.abs(num));
-            return (norm < 10 ? '0' : '') + norm;
-        };
-    return this.getFullYear() +
-        '-' + pad(this.getMonth() + 1) +
-        '-' + pad(this.getDate()) +
-        'T' + pad(this.getHours()) +
-        ':' + pad(this.getMinutes()) +
-        ':' + pad(this.getSeconds()) +
-        dif + pad(tzo / 60) +
-        ':' + pad(tzo % 60);
-}
