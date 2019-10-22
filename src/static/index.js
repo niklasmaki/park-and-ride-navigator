@@ -242,9 +242,12 @@ $(document).ready(() => {
             date: 'far fa-calendar',
             time: 'far fa-clock'
         },
+        locale:  moment.locale("en-gb"),
         format: "DD.MM.YYYY HH:mm",
-        defaultDate: moment()
+        minDate: moment()
     })
-    
+
+    $('#datetimepicker1').datetimepicker('date', moment()) 
+
     initMap()
 })
